@@ -4,7 +4,10 @@ const Skor = () => {
   return (
     <div className="skor">
       <h2>Skor</h2>
-      <p>Burada skor bilgileri gösterilecek.</p>
+      <p>Güncel Seri:</p>
+      <p>Güncel Seri Skoru:</p>
+      <p>En Yüksek Seri:</p>
+      <p>En Yüksek Seri Skoru:</p>
     </div>
   );
 }
