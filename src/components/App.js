@@ -6,11 +6,9 @@ import Skor from "./skor.js";
 function App () {
   return (
     <div className="App">
-      <Skor />
-      <h1>Welcome to My Application</h1>
+      <h1>Bu uygulama kelime bulmaca oyununu içerir.</h1>
+      <Skor />      
       <KelimeTablosu />
-      <Klavye />
-      <p>Bu uygulama kelime bulmaca oyununu içerir.</p>
     </div>
   );
 }

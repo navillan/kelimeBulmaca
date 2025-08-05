@@ -1,0 +1,53 @@
+
+
+.App {
+  text-align: center;
+}
+
+.skor {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  pointer-events: none;
+}
+
+.skor-detay {
+  margin: 10px;
+}
+
+.kelime-tablosu {
+  margin-top: 40px;
+}
+
+.letter-wrapper {
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.letter {
+  margin: 20px 20px;
+}
+
+.button-cluster button {
+  margin: 1px;
+}
+
+.correct {
+  background-color: green;
+  color: white;
+  border-color: white;
+}
+
+.present {
+  background-color: yellow;
+  color: white;
+  border-color: white;
+}
+
+.absent {
+  background-color: gray;
+  color: white;
+  border-color: white;
+}
+

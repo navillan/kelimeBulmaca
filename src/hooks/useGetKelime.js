@@ -7,6 +7,7 @@ const useRandomKelime = () => {
   const [kelimeler, setKelimeler] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const kelime = kelimeler.length > 0 ? kelimeler[Math.floor(Math.random() * kelimeler.length)] : "";
 
   async function getKelimeler() {
     setLoading(true);
@@ -14,7 +15,6 @@ const useRandomKelime = () => {
     try {
     const response = await getDocs(collection(db, "harfler"));
     const kelimelerArray = response.docs.map(doc => ({
-        id: doc.id,
         ...doc.data()
       }));
 
@@ -29,10 +29,8 @@ const useRandomKelime = () => {
       useEffect(() => {
         getKelimeler();
       }, []);
-    setTimeout(() => {
-      console.log(kelimeler);
-    } , 3000);
-      return { kelimeler, error, loading, getKelimeler };
+    
+      return { kelime, error, loading, getKelimeler };
 };
 
 export default useRandomKelime;

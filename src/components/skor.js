@@ -3,11 +3,10 @@
 const Skor = () => {
   return (
     <div className="skor">
-      <h2>Skor</h2>
-      <p>Güncel Seri:</p>
-      <p>Güncel Seri Skoru:</p>
-      <p>En Yüksek Seri:</p>
-      <p>En Yüksek Seri Skoru:</p>
+      <p className="skor-detay">Güncel Seri: 0</p>
+      <p className="skor-detay">Güncel Seri Skoru: 0</p>
+      <p className="skor-detay">En Yüksek Seri: 0</p>
+      <p className="skor-detay">En Yüksek Seri Skoru: 0</p>
     </div>
   );
 }
