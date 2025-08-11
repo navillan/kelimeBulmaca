@@ -7,7 +7,14 @@ const useRandomKelime = () => {
   const [kelimeler, setKelimeler] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const kelime = kelimeler.length > 0 ? kelimeler[Math.floor(Math.random() * kelimeler.length)] : "";
+  const kelime = kelimeler.length > 0 
+    ? kelimeler[Math.floor(Math.random() * (kelimeler.length))]
+    : "";
+  console.log("Kelimeler:", kelime);
+  
+  const mainKelime = Object.values(kelime).map(val =>
+      typeof val === "string" ? val.toUpperCase() : val
+    );
 
   async function getKelimeler() {
     setLoading(true);
@@ -30,7 +37,7 @@ const useRandomKelime = () => {
         getKelimeler();
       }, []);
     
-      return { kelime, error, loading, getKelimeler };
+      return { mainKelime, kelimeler, error, loading, getKelimeler };
 };
 
 export default useRandomKelime;

@@ -1,5 +1,4 @@
 import KelimeTablosu from "./kelimeTablosu.js";
-import Klavye from "./klavye.js";
 import Skor from "./skor.js";
 
 

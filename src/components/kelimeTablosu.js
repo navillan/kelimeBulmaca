@@ -5,15 +5,15 @@ import Klavye from "./klavye.js";
 
 
 const KelimeTablosu = () => {
-  const { kelime } = useRandomKelime();
   const ROWS = 7;
   const COLS = 5;
+  const { mainKelime } = useRandomKelime();
+  const [tahminKelime, setTahminKelime] = useState([]);
   const [table, setTable] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
-  const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });
-  
-  console.log("Kelime:", kelime);
+  const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });  
+  console.log("Kelime:", mainKelime[Math.floor(Math.random() * (mainKelime.length))]);
   
 
   
@@ -29,10 +29,16 @@ const KelimeTablosu = () => {
         );
         setTable(updatedTable);
         setCurrentCell({ row, col: newCol });
+        setTahminKelime(prev =>
+        prev.length > 0 ? prev.slice(0, -1) : prev
+        );
       }
     } else if (key === "ENTER") {
       if (row < ROWS - 1) {
         setCurrentCell({ row: row + 1, col: 0 });
+        console.log(tahminKelime);
+        
+        setTahminKelime([]);
       }
     } else if (/^[A-ZĞÜŞİÖÇ]$/i.test(key)) {
       if (col < COLS) {
@@ -42,6 +48,7 @@ const KelimeTablosu = () => {
           )
         );
         setTable(updatedTable);
+        setTahminKelime(prev => [...prev, key.toUpperCase()]);
         if (col < COLS - 1) {
           setCurrentCell({ row, col: col + 1 });
         }
@@ -52,7 +59,7 @@ const KelimeTablosu = () => {
   return (
     <div className="kelime-tablosu">
       <h2>Kelime Tablosu Component</h2>
-      <table className="kelime-table letter-wrapper">
+      <table className="kelime-table letter-wrapper" id="kelimeTable">
         <tbody>
           {table.map((row, rowIdx) => (
             <tr key={rowIdx}>
@@ -68,7 +75,7 @@ const KelimeTablosu = () => {
                       handleInputChange(
                         rowIdx,
                         colIdx,
-                        e.target.value.replace(/[^a-zA-ZğüşöçıİĞÜŞÖÇ]/, "")
+                        e.target.value.replace(/[^a-zA-ZğüşöçıİĞÜŞÖÇ]/, "")                                             
                       )
                     }
                     style={{
