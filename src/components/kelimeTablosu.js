@@ -7,13 +7,16 @@ import Klavye from "./klavye.js";
 const KelimeTablosu = () => {
   const ROWS = 7;
   const COLS = 5;
-  const { mainKelime } = useRandomKelime();
+  const getKelime = useRandomKelime();
+  const { mainKelime } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
   const [table, setTable] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
   const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });  
-  console.log("Kelime:", mainKelime[Math.floor(Math.random() * (mainKelime.length))]);
+  console.log("Main Kelime:", mainKelime && Object.values(mainKelime).map(val =>
+          typeof val === "string" ? val.toUpperCase() : val
+        ));
   
 
   
@@ -59,6 +62,10 @@ const KelimeTablosu = () => {
   return (
     <div className="kelime-tablosu">
       <h2>Kelime Tablosu Component</h2>
+      <button onClick={() => getKelime.getKelimeler()}>
+        Kelimeyi Yenile
+      </button>
+      <p>Tahmin: {tahminKelime.join(" ")}</p>
       <table className="kelime-table letter-wrapper" id="kelimeTable">
         <tbody>
           {table.map((row, rowIdx) => (
@@ -69,15 +76,8 @@ const KelimeTablosu = () => {
                     type="text"
                     maxLength={1}
                     value={cell}
+                    readOnly
                     onFocus={() => setCurrentCell({ row: rowIdx, col: colIdx })}
-                    //Burası bir garip onchange
-                    onChange={e =>
-                      handleInputChange(
-                        rowIdx,
-                        colIdx,
-                        e.target.value.replace(/[^a-zA-ZğüşöçıİĞÜŞÖÇ]/, "")                                             
-                      )
-                    }
                     style={{
                       width: "2em",
                       height: "2em",

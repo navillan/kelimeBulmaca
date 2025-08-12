@@ -2,21 +2,18 @@ import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from 'react';
 import { db } from '../index.js';
 
-const useRandomKelime = () => {
+const useGetKelime = () => {
 
   const [kelimeler, setKelimeler] = useState([]);
+  const [mainKelime, setMainKelime] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const kelime = kelimeler.length > 0 
-    ? kelimeler[Math.floor(Math.random() * (kelimeler.length))]
-    : "";
-  console.log("Kelimeler:", kelime);
   
-  const mainKelime = Object.values(kelime).map(val =>
-      typeof val === "string" ? val.toUpperCase() : val
-    );
+  
+  
 
   async function getKelimeler() {
+    
     setLoading(true);
     
     try {
@@ -24,7 +21,14 @@ const useRandomKelime = () => {
     const kelimelerArray = response.docs.map(doc => ({
         ...doc.data()
       }));
-
+      const kelime = kelimelerArray.length > 0 
+    ? kelimelerArray[Math.floor(Math.random() * (kelimelerArray.length))]
+    : "";
+  console.log("Kelimeler:", kelime);
+    const mainKelime = kelime != {} 
+    ? Object.values(kelime)[Math.floor(Math.random() * (Object.entries(kelime).length))]
+    : "";
+    setMainKelime(mainKelime);
     setKelimeler(kelimelerArray);
         } catch (err) {
           setError(err);
@@ -40,4 +44,4 @@ const useRandomKelime = () => {
       return { mainKelime, kelimeler, error, loading, getKelimeler };
 };
 
-export default useRandomKelime;
+export default useGetKelime;
