@@ -8,10 +8,10 @@ const useRandomKelime = async () => {
   const kelime = kelimeler.length > 0 
   ? kelimeler[Math.floor(Math.random() * (kelimeler.length))]
   : "";
-  console.log("Kelimeler:", kelime);
+  console.log("KelimelerRandom:", kelime);
 
   const mainKelime = kelime != {} 
-  ? Object.values(kelime)[Math.floor(Math.random() * (Object.entries(kelime).length))]
+  ? Object.entries(kelime)[Math.floor(Math.random() * (Object.entries(kelime).length))]
   : "";
 
   return { mainKelime, kelimeler };

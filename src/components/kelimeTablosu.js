@@ -8,10 +8,13 @@ const KelimeTablosu = () => {
   const ROWS = 7;
   const COLS = 5;
   const getKelime = useRandomKelime();
-  const { mainKelime } = getKelime;
+  const { mainKelime, kelimeler } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
   const [table, setTable] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
+  );
+  const [cellColors, setCellColors] = useState(
+  Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
   const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });  
   console.log("Main Kelime:", mainKelime && Object.values(mainKelime).map(val =>
@@ -35,14 +38,44 @@ const KelimeTablosu = () => {
         setTahminKelime(prev =>
         prev.length > 0 ? prev.slice(0, -1) : prev
         );
+        setCellColors(prev => {
+        const newColors = prev.map(arr => [...arr]);
+        newColors[row][col] = "";
+        return newColors;
+        });
       }
     } else if (key === "ENTER") {
-      if (row < ROWS - 1) {
-        setCurrentCell({ row: row + 1, col: 0 });
-        console.log(tahminKelime);
-        
+      const guess = tahminKelime.join("");
+      if (Object.values(kelimeler).includes(guess)) {
+        if (tahminKelime.length === COLS && mainKelime) {
+          const mainKelimeArr = Object.values(mainKelime).map(val =>
+            typeof val === "string" ? val.toUpperCase() : val
+          );
+          const newColors = cellColors.map(arr => [...arr]);
+          for (let i = 0; i < COLS; i++) {
+            if (tahminKelime[i] === mainKelimeArr[i]) {
+              newColors[row][i] = "#8BC34A";
+            } else if (mainKelimeArr.includes(tahminKelime[i])) {
+              newColors[row][i] = "#FFC107";
+            } else {
+              newColors[row][i] = ""; 
+            }
+          }
+        setCellColors(newColors);
+        }
+        if (row < ROWS - 1) {
+          setCurrentCell({ row: row + 1, col: 0 });
+          console.log(tahminKelime);        
+          setTahminKelime([]);
+        }
+      } else if (!Object.values(kelimeler).includes(guess)) {
+        const updatedTable = table.map((rArr, rIdx) =>
+          rIdx === row ? Array(COLS).fill("") : rArr
+        );
+        setTable(updatedTable);
+        setCurrentCell({ row, col: 0 });
         setTahminKelime([]);
-      }
+        }
     } else if (/^[A-ZĞÜŞİÖÇ]$/i.test(key)) {
       if (col < COLS) {
         const updatedTable = table.map((rArr, rIdx) =>
@@ -85,9 +118,10 @@ const KelimeTablosu = () => {
                       textAlign: "center",
                       textTransform: "uppercase",
                       background:
-                        currentCell.row === rowIdx && currentCell.col === colIdx
+                        cellColors[rowIdx][colIdx] ||
+                        (currentCell.row === rowIdx && currentCell.col === colIdx
                           ? "#e0e0e0"
-                          : undefined,
+                          : undefined),
                     }}
                   />
                 </td>

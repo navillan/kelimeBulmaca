@@ -25,11 +25,12 @@ const useGetKelime = () => {
     ? kelimelerArray[Math.floor(Math.random() * (kelimelerArray.length))]
     : "";
   console.log("Kelimeler:", kelime);
+  
     const mainKelime = kelime != {} 
     ? Object.values(kelime)[Math.floor(Math.random() * (Object.entries(kelime).length))]
     : "";
     setMainKelime(mainKelime);
-    setKelimeler(kelimelerArray);
+    setKelimeler(kelime);
         } catch (err) {
           setError(err);
         } finally {
