@@ -1,6 +1,7 @@
 import useRandomKelime from "../hooks/useGetKelime.js";
 import { useState } from "react";
 import Klavye from "./klavye.js";
+import ConditionAlert from "./conditionAlert.js";
 
 
 
@@ -8,6 +9,8 @@ const KelimeTablosu = () => {
   const ROWS = 7;
   const COLS = 5;
   const getKelime = useRandomKelime();
+  const [isWin, setIsWin] = useState(false);
+  const [isLose, setIsLose] = useState(false);
   const { mainKelime, kelimeler } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
   const [table, setTable] = useState(
@@ -62,6 +65,11 @@ const KelimeTablosu = () => {
             }
           }
         setCellColors(newColors);
+        if (newColors[row].every(color => color === "#8BC34A")) {
+          setIsWin(true);
+        } else if (row === ROWS - 1) {
+          setIsLose(true);
+        }
         }
         if (row < ROWS - 1) {
           setCurrentCell({ row: row + 1, col: 0 });
@@ -95,10 +103,19 @@ const KelimeTablosu = () => {
   return (
     <div className="kelime-tablosu">
       <h2>Kelime Tablosu Component</h2>
-      <button onClick={() => getKelime.getKelimeler()}>
+      <button onClick={() => {
+        getKelime.getKelimeler(),
+        setTable(Array.from({ length: ROWS }, () => Array(COLS).fill("")));
+        setCellColors(Array.from({ length: ROWS }, () => Array(COLS).fill("")));
+        setTahminKelime([]);
+        setCurrentCell({ row: 0, col: 0 });
+        setIsWin(false);
+        setIsLose(false);
+      }}>
         Kelimeyi Yenile
       </button>
       <p>Tahmin: {tahminKelime.join(" ")}</p>
+      <ConditionAlert isWin={isWin} isLose={isLose} />
       <table className="kelime-table letter-wrapper" id="kelimeTable">
         <tbody>
           {table.map((row, rowIdx) => (
