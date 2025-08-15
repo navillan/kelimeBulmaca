@@ -11,6 +11,7 @@ const KelimeTablosu = () => {
   const getKelime = useRandomKelime();
   const [isWin, setIsWin] = useState(false);
   const [isLose, setIsLose] = useState(false);
+  const [isDisabledReset, setIsDisabledReset] = useState(true);
   const { mainKelime, kelimeler } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
   const [table, setTable] = useState(
@@ -61,7 +62,7 @@ const KelimeTablosu = () => {
             } else if (mainKelimeArr.includes(tahminKelime[i])) {
               newColors[row][i] = "#FFC107";
             } else {
-              newColors[row][i] = ""; 
+              newColors[row][i] = "#ff6767ff"; 
             }
           }
         setCellColors(newColors);
@@ -111,6 +112,7 @@ const KelimeTablosu = () => {
         setCurrentCell({ row: 0, col: 0 });
         setIsWin(false);
         setIsLose(false);
+        setIsDisabledReset(true);
       }}>
         Kelimeyi Yenile
       </button>
@@ -147,7 +149,11 @@ const KelimeTablosu = () => {
           ))}
         </tbody>
       </table>
-      <Klavye onKeyPress={handleKeyboardInput} />
+      <Klavye 
+      onKeyPress={handleKeyboardInput}
+      cellColors={cellColors}
+      table={table}
+      />
     </div>
   );
 };
