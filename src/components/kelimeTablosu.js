@@ -2,6 +2,7 @@ import useRandomKelime from "../hooks/useGetKelime.js";
 import { useState } from "react";
 import Klavye from "./klavye.js";
 import ConditionAlert from "./conditionAlert.js";
+import useCheckValidWord from "../hooks/useCheckValidWord.js";
 
 
 
@@ -12,7 +13,7 @@ const KelimeTablosu = () => {
   const [isWin, setIsWin] = useState(false);
   const [isLose, setIsLose] = useState(false);
   const [isDisabledReset, setIsDisabledReset] = useState(true);
-  const { mainKelime, kelimeler } = getKelime;
+  const { mainKelime, kelimeler, kelimelerArray } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
   const [table, setTable] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
@@ -24,7 +25,8 @@ const KelimeTablosu = () => {
   console.log("Main Kelime:", mainKelime && Object.values(mainKelime).map(val =>
           typeof val === "string" ? val.toUpperCase() : val
         ));
-  
+
+
 
   
   const handleKeyboardInput = (key) => {
@@ -52,6 +54,7 @@ const KelimeTablosu = () => {
       const guess = tahminKelime.join("");
       if (Object.values(kelimeler).includes(guess)) {
         if (tahminKelime.length === COLS && mainKelime) {
+          useCheckValidWord(tahminKelime, kelimelerArray);
           const mainKelimeArr = Object.values(mainKelime).map(val =>
             typeof val === "string" ? val.toUpperCase() : val
           );

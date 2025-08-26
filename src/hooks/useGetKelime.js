@@ -4,6 +4,7 @@ import { db } from '../index.js';
 
 const useGetKelime = () => {
 
+  const [kelimelerArray, setKelimelerArray] = useState([]);
   const [kelimeler, setKelimeler] = useState([]);
   const [mainKelime, setMainKelime] = useState([]);
   const [error, setError] = useState(null);
@@ -18,19 +19,22 @@ const useGetKelime = () => {
     
     try {
     const response = await getDocs(collection(db, "harfler"));
-    const kelimelerArray = response.docs.map(doc => ({
+    const kelimelerLibrary = response.docs.map(doc => ({
         ...doc.data()
       }));
-      const kelime = kelimelerArray.length > 0 
-    ? kelimelerArray[Math.floor(Math.random() * (kelimelerArray.length))]
+      const kelime = kelimelerLibrary.length > 0 
+    ? kelimelerLibrary[Math.floor(Math.random() * (kelimelerLibrary.length))]
     : "";
-  console.log("Kelimeler:", kelime);
+  console.log("Harfin Kelimeleri:", kelime);
+  console.log("Tüm Kelimeler:", kelimelerLibrary);
+  
   
     const mainKelime = kelime != {} 
     ? Object.values(kelime)[Math.floor(Math.random() * (Object.entries(kelime).length))]
     : "";
     setMainKelime(mainKelime);
     setKelimeler(kelime);
+    setKelimelerArray(kelimelerLibrary);
         } catch (err) {
           setError(err);
         } finally {
@@ -42,7 +46,7 @@ const useGetKelime = () => {
         getKelimeler();
       }, []);
     
-      return { mainKelime, kelimeler, error, loading, getKelimeler };
+      return { mainKelime, kelimeler, kelimelerArray, error, loading, getKelimeler };
 };
 
 export default useGetKelime;
