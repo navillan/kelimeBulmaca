@@ -1,16 +1,16 @@
+import { useState } from "react";
 
-
-const useCheckValidWord = (tahminKelime, kelimelerArray) => {
+function useCheckValidWord (setIsValidWord, tahminKelime, kelimelerArray) {
+  debugger;
   const kelimelerLibrary = kelimelerArray.flatMap(obj => Object.values(obj)
   );
 
-  let isValid = false;
   if (kelimelerLibrary.includes(tahminKelime.join(""))) {
-    isValid = true;
+    setIsValidWord(true)
   }
 
   console.log("Kelimeler Kütüphanesi:", kelimelerLibrary);
-  return isValid;
+  return { setIsValidWord };
 }
 
 export default useCheckValidWord;

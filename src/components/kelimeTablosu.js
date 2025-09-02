@@ -1,7 +1,7 @@
 import useRandomKelime from "../hooks/useGetKelime.js";
 import { useState } from "react";
 import Klavye from "./klavye.js";
-import ConditionAlert from "./conditionAlert.js";
+import ResultAlert from "./resultAlert.js";
 import useCheckValidWord from "../hooks/useCheckValidWord.js";
 
 
@@ -12,7 +12,7 @@ const KelimeTablosu = () => {
   const getKelime = useRandomKelime();
   const [isWin, setIsWin] = useState(false);
   const [isLose, setIsLose] = useState(false);
-  const [isDisabledReset, setIsDisabledReset] = useState(true);
+  const [isValidWord, setIsValidWord] = useState(false);
   const { mainKelime, kelimeler, kelimelerArray } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
   const [table, setTable] = useState(
@@ -52,9 +52,9 @@ const KelimeTablosu = () => {
       }
     } else if (key === "ENTER") {
       const guess = tahminKelime.join("");
-      if (Object.values(kelimeler).includes(guess)) {
-        if (tahminKelime.length === COLS && mainKelime) {
-          useCheckValidWord(tahminKelime, kelimelerArray);
+      useCheckValidWord(setIsValidWord, tahminKelime, kelimelerArray);
+      if (isValidWord) {
+        if (tahminKelime.length === COLS && mainKelime) {          
           const mainKelimeArr = Object.values(mainKelime).map(val =>
             typeof val === "string" ? val.toUpperCase() : val
           );
@@ -115,12 +115,11 @@ const KelimeTablosu = () => {
         setCurrentCell({ row: 0, col: 0 });
         setIsWin(false);
         setIsLose(false);
-        setIsDisabledReset(true);
       }}>
         Kelimeyi Yenile
       </button>
       <p>Tahmin: {tahminKelime.join(" ")}</p>
-      <ConditionAlert isWin={isWin} isLose={isLose} />
+      <ResultAlert isWin={isWin} isLose={isLose} />
       <table className="kelime-table letter-wrapper" id="kelimeTable">
         <tbody>
           {table.map((row, rowIdx) => (

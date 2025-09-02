@@ -5,7 +5,7 @@ const keys = [
   ["ENTER", "T", "U", "Ü", "V", "Y", "Z", "BACKSPACE"],
 ];
 
-const Klavye = ({ onKeyPress, cellColors, table, isDisabledReset }) => {
+const Klavye = ({ onKeyPress, cellColors, table }) => {
   
   const getLetterColor = (key) => {
     let color = "";
@@ -26,13 +26,11 @@ const Klavye = ({ onKeyPress, cellColors, table, isDisabledReset }) => {
   };
 
   const getButtonProps = (k) => {
-  const color = getLetterColor(k);
+    const color = getLetterColor(k);
     return {
       style: {
         background: color || "#e0e0e0",
-        cursor: color && !isDisabledReset ? "not-allowed" : "pointer",
-      },
-      disabled: color && !isDisabledReset,
+      }
     };
   };
   
@@ -42,21 +40,21 @@ const Klavye = ({ onKeyPress, cellColors, table, isDisabledReset }) => {
       <h2>Klavye Component</h2>
       <div className="button-cluster button-cluster-upper">
         {keys[0].map((k) => (
-          <button key={k} onClick={() => onKeyPress && onKeyPress(k)} {...getButtonProps(k)}>
+          <button key={k} onClick={() => onKeyPress(k)} {...getButtonProps(k)}>
             {k}
           </button>
         ))}
       </div>
       <div className="button-cluster button-cluster-middle">
         {keys[1].map((k) => (
-          <button key={k} onClick={() => onKeyPress && onKeyPress(k)} {...getButtonProps(k)}>
+          <button key={k} onClick={() => onKeyPress(k)} {...getButtonProps(k)}>
             {k}
           </button>
         ))}
       </div>
       <div className="button-cluster button-cluster-bottom">
         {keys[2].map((k) => (
-          <button key={k} onClick={() => onKeyPress && onKeyPress(k)} {...getButtonProps(k)}>
+          <button key={k} onClick={() => onKeyPress(k)} {...getButtonProps(k)}>
             {k}
           </button>
         ))}
