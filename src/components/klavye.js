@@ -2,10 +2,10 @@
 const keys = [
   ["A", "B", "C", "Ç", "D", "E", "F", "G", "H", "Ğ", "I", "İ"],
   ["J", "K", "L", "M", "N", "O", "Ö", "P", "R", "S", "Ş"],
-  ["ENTER", "T", "U", "Ü", "V", "Y", "Z", "BACKSPACE"],
+  ["⏎", "T", "U", "Ü", "V", "Y", "Z", "⌫"],
 ];
 
-const Klavye = ({ onKeyPress, cellColors, table }) => {
+const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
   
   const getLetterColor = (key) => {
     let color = "";
@@ -27,12 +27,21 @@ const Klavye = ({ onKeyPress, cellColors, table }) => {
 
   const getButtonProps = (k) => {
     const color = getLetterColor(k);
-    return {
-      style: {
-        background: color || "#e0e0e0",
+    if (k === "ENTER") {
+      const isDisabled = !table[currentCell?.row]?.every(cell => cell !== "");
+      return {
+        style: {
+          background: color || "#e0e0e0",
+        },
+          disabled: isDisabled,
+        };
       }
+      return {
+        style: {
+          background: color || "#e0e0e0",
+        }
+      };
     };
-  };
   
 
   return (
@@ -40,21 +49,34 @@ const Klavye = ({ onKeyPress, cellColors, table }) => {
       <h2>Klavye Component</h2>
       <div className="button-cluster button-cluster-upper">
         {keys[0].map((k) => (
-          <button key={k} onClick={() => onKeyPress(k)} {...getButtonProps(k)}>
+          <button 
+          key={k} 
+          onClick={() => onKeyPress(k)} 
+          {...getButtonProps(k)}
+          >
             {k}
           </button>
         ))}
       </div>
       <div className="button-cluster button-cluster-middle">
         {keys[1].map((k) => (
-          <button key={k} onClick={() => onKeyPress(k)} {...getButtonProps(k)}>
+          <button 
+          key={k} 
+          onClick={() => onKeyPress(k)} 
+          {...getButtonProps(k)}
+          >
             {k}
           </button>
         ))}
       </div>
       <div className="button-cluster button-cluster-bottom">
         {keys[2].map((k) => (
-          <button key={k} onClick={() => onKeyPress(k)} {...getButtonProps(k)}>
+          <button 
+          key={k} 
+          onClick={() => onKeyPress(k)} 
+          className={["⏎", "⌫"].includes(k) ? "special-key" : ""}
+          {...getButtonProps(k)}
+          >
             {k}
           </button>
         ))}

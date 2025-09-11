@@ -36,8 +36,23 @@
   margin: 20px 20px;
 }
 
+.button-cluster {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px;
+  gap: 4px;
+}
+
 .button-cluster button {
-  margin: 1px;
+  height: 2rem;
+  width: 2rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+}
+
+.button-cluster button.special-key {
+  width: 3rem;
 }
 
 .correct {
