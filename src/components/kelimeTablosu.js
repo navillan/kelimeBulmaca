@@ -1,5 +1,5 @@
 import useRandomKelime from "../hooks/useGetKelime.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Klavye from "./klavye.js";
 import ResultAlert from "./resultAlert.js";
 import useCheckValidWord from "../hooks/useCheckValidWord.js";
@@ -24,7 +24,6 @@ const KelimeTablosu = () => {
   const [highestStreak, setHighestStreak] = useState(score.highestStreak || 0);
   const [highestStreakScore, setHighestStreakScore] = useState(score.highestStreakScore || 0);
   const [isValidWord, setIsValidWord] = useState(false);
-  const [isCheckingWord, setIsCheckingWord] = useState(false);
   const { mainKelime, kelimeler, kelimelerArray } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
   const [table, setTable] = useState(
@@ -36,16 +35,23 @@ const KelimeTablosu = () => {
   const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });  
   console.log("Main Kelime:", mainKelime && Object.values(mainKelime).map(val =>
           typeof val === "string" ? val.toUpperCase() : val
-        ));  
+        ));
+
+  let { row, col } = currentCell;
+
+  useEffect(() => {
+    if (
+    currentCell.col === COLS - 1 &&
+    table[currentCell.row][currentCell.col] !== ""
+  ) {
+    useCheckValidWord(setIsValidWord, tahminKelime, kelimelerArray);
+  }
+  }, [tahminKelime]);
 
 
   
   const handleKeyboardInput = (key) => {
-    let { row, col } = currentCell;
-    if(table[currentCell?.row]?.every(cell => cell !== "")) {
-      useCheckValidWord(setIsValidWord, tahminKelime, kelimelerArray);
-    }
-    if (key === "BACKSPACE") {
+    if (key === "⌫") {
       if (col > 0 || (col === 0 && table[row][col] !== "")) {
         const newCol = col > 0 && table[row][col] === "" ? col - 1 : col;
         const updatedTable = table.map((rArr, rIdx) =>
@@ -64,9 +70,8 @@ const KelimeTablosu = () => {
         return newColors;
         });
       }
-    } else if (key === "ENTER") {
+    } else if (key === "⏎") {
       const guess = tahminKelime.join("");
-      
 
       if (isValidWord) {
         if (tahminKelime.length === COLS && mainKelime) {          
@@ -135,7 +140,6 @@ const KelimeTablosu = () => {
 
   return (
     <div className="kelime-tablosu">
-      <h2>Kelime Tablosu Component</h2>
       <button onClick={() => {
         getKelime.getKelimeler(),
         setTable(Array.from({ length: ROWS }, () => Array(COLS).fill("")));
@@ -147,7 +151,7 @@ const KelimeTablosu = () => {
       }}>
         Kelimeyi Yenile
       </button>
-      <p>Tahmin: {tahminKelime.join(" ")}</p>
+      <p className="tahmin-harfler">Kelimeniz: {tahminKelime.join(" ")}</p>
       <ResultAlert isWin={isWin} isLose={isLose} />
       <table className="kelime-table letter-wrapper" id="kelimeTable">
         <tbody>

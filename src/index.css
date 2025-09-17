@@ -7,7 +7,7 @@
 .skor {
   display: flex;
   justify-content: center;
-  margin-top: 80px;
+  margin-top: 50px;
   pointer-events: none;
 }
 
@@ -17,13 +17,38 @@
 
 .result-alert {
   margin-top: 10px;
-  font-size: 12px;
+  height: 160px;
+  width: 340px;
+  font-size: 14px;
   font-weight: bold;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.win-result-alert {
+  color: rgb(29, 139, 19);
+  border: 3px solid rgb(29, 139, 19);
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.lose-result-alert {
   color: red;
+  border: 3px solid red;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .kelime-tablosu {
-  margin-top: 40px;
+  margin-top: 30px;
+}
+
+.tahmin-harfler {
+  margin-top: 34px;
+  margin-bottom: 34px;
 }
 
 .letter-wrapper {

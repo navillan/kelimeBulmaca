@@ -5,7 +5,7 @@ import Skor from "./skor.js";
 function App () {
   return (
     <div className="App">
-      <h1>Bu uygulama kelime bulmaca oyununu içerir.</h1>
+      <h1>Kelime Bulmaca</h1>
       <Skor />
       <KelimeTablosu />
     </div>
