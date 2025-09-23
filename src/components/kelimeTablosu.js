@@ -4,6 +4,7 @@ import Klavye from "./klavye.js";
 import ResultAlert from "./resultAlert.js";
 import useCheckValidWord from "../hooks/useCheckValidWord.js";
 import useUpdateScores from "../hooks/useUpdateScores.js";
+import TahminKelime from "./tahminKelime.js";
 
 
 
@@ -19,6 +20,7 @@ const KelimeTablosu = () => {
   const getKelime = useRandomKelime();
   const [isWin, setIsWin] = useState(false);
   const [isLose, setIsLose] = useState(false);
+  const [correctWords, setCorrectWords] = useState(["-", "-", "-", "-", "-"]);
   const [currentStreak, setCurrentStreak] = useState(score.currentStreak || 0);
   const [currentStreakScore, setCurrentStreakScore] = useState(score.currentStreakScore || 0);
   const [highestStreak, setHighestStreak] = useState(score.highestStreak || 0);
@@ -26,16 +28,18 @@ const KelimeTablosu = () => {
   const [isValidWord, setIsValidWord] = useState(false);
   const { mainKelime, kelimeler, kelimelerArray } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
+
   const [table, setTable] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
   const [cellColors, setCellColors] = useState(
-  Array.from({ length: ROWS }, () => Array(COLS).fill(""))
+    Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
   const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });  
   console.log("Main Kelime:", mainKelime && Object.values(mainKelime).map(val =>
           typeof val === "string" ? val.toUpperCase() : val
-        ));
+    )
+  );
 
   let { row, col } = currentCell;
 
@@ -43,10 +47,20 @@ const KelimeTablosu = () => {
     if (
     currentCell.col === COLS - 1 &&
     table[currentCell.row][currentCell.col] !== ""
-  ) {
-    useCheckValidWord(setIsValidWord, tahminKelime, kelimelerArray);
-  }
+    ) {
+      useCheckValidWord(setIsValidWord, tahminKelime, kelimelerArray);
+    }
   }, [tahminKelime]);
+  
+  
+  const handleCorrectWords = (e, tahminKelime) => {
+    
+    setCorrectWords((prev) => {
+      const newCorrectWords = [...prev];
+      newCorrectWords[e] = tahminKelime;
+      return newCorrectWords;
+    });
+  };
 
 
   
@@ -82,6 +96,7 @@ const KelimeTablosu = () => {
           for (let i = 0; i < COLS; i++) {
             if (tahminKelime[i] === mainKelimeArr[i]) {
               newColors[row][i] = "#8BC34A";
+              handleCorrectWords(i, tahminKelime[i]);
             } else if (mainKelimeArr.includes(tahminKelime[i])) {
               newColors[row][i] = "#FFC107";
             } else {
@@ -148,10 +163,16 @@ const KelimeTablosu = () => {
         setCurrentCell({ row: 0, col: 0 });
         setIsWin(false);
         setIsLose(false);
+        setCorrectWords(["-", "-", "-","-", "-"]);
       }}>
         Kelimeyi Yenile
       </button>
-      <p className="tahmin-harfler">Kelimeniz: {tahminKelime.join(" ")}</p>
+      <TahminKelime
+      correctWords={correctWords}
+      cellColors={cellColors}
+      currentCell={currentCell}
+      currentRow={currentCell.row}
+      />
       <ResultAlert isWin={isWin} isLose={isLose} />
       <table className="kelime-table letter-wrapper" id="kelimeTable">
         <tbody>
@@ -184,7 +205,7 @@ const KelimeTablosu = () => {
           ))}
         </tbody>
       </table>
-      <Klavye 
+      <Klavye
       onKeyPress={handleKeyboardInput}
       cellColors={cellColors}
       table={table}

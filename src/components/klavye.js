@@ -1,17 +1,17 @@
 
 const keys = [
-  ["A", "B", "C", "Ç", "D", "E", "F", "G", "H", "Ğ", "I", "İ"],
+  ["A", "B", "C", "Ç", "D", "E", "F", "G", "Ğ", "H", "I", "İ"],
   ["J", "K", "L", "M", "N", "O", "Ö", "P", "R", "S", "Ş"],
   ["⏎", "T", "U", "Ü", "V", "Y", "Z", "⌫"],
 ];
 
 const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
   
-  const getLetterColor = (key) => {
+  const getLetterColor = (tableCellColor) => {
     let color = "";
     for (let row = 0; row < table.length; row++) {
       for (let col = 0; col < table[row].length; col++) {
-        if (table[row][col] === key) {
+        if (table[row][col] === tableCellColor) {
           if (cellColors[row][col] === "#8BC34A") {
             return "#8BC34A";
           } else if (cellColors[row][col] === "#FFC107") {
@@ -26,19 +26,19 @@ const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
   };
 
   const getButtonProps = (k) => {
-    const color = getLetterColor(k);
+    const buttonColor = getLetterColor(k);
     if (k === "ENTER") {
       const isDisabled = !table[currentCell?.row]?.every(cell => cell !== "");
       return {
         style: {
-          background: color || "#e0e0e0",
+          background: buttonColor || "#e0e0e0",
         },
           disabled: isDisabled,
         };
       }
       return {
         style: {
-          background: color || "#e0e0e0",
+          background: buttonColor || "#e0e0e0",
         }
       };
     };
