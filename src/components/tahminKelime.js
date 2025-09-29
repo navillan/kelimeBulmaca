@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
 
 
 const TahminKelime = ({ correctWords }) => {
  
 
   return (
-    <p className="tahmin-harfler">Kelimeniz:  {correctWords}</p>
+    <div className="tahmin-wrapper">
+      <p className="tahmin-baslik">Kelimeniz:</p>
+      <p className="tahmin-harfler">{correctWords}</p>
+    </div>
   )
 }
 

@@ -8,7 +8,7 @@ import TahminKelime from "./tahminKelime.js";
 
 
 
-const KelimeTablosu = () => {  
+const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, setCurrentStreakScore }) => {  
   let score = JSON.parse(localStorage.getItem('score')) || {
           currentStreak,
           currentStreakScore,
@@ -20,9 +20,8 @@ const KelimeTablosu = () => {
   const getKelime = useRandomKelime();
   const [isWin, setIsWin] = useState(false);
   const [isLose, setIsLose] = useState(false);
+  const [remainingRows, setRemainingRows] = useState(7);
   const [correctWords, setCorrectWords] = useState(["-", "-", "-", "-", "-"]);
-  const [currentStreak, setCurrentStreak] = useState(score.currentStreak || 0);
-  const [currentStreakScore, setCurrentStreakScore] = useState(score.currentStreakScore || 0);
   const [highestStreak, setHighestStreak] = useState(score.highestStreak || 0);
   const [highestStreakScore, setHighestStreakScore] = useState(score.highestStreakScore || 0);
   const [isValidWord, setIsValidWord] = useState(false);
@@ -97,10 +96,11 @@ const KelimeTablosu = () => {
             if (tahminKelime[i] === mainKelimeArr[i]) {
               newColors[row][i] = "#8BC34A";
               handleCorrectWords(i, tahminKelime[i]);
+              setRemainingRows(7 - currentCell.row)
             } else if (mainKelimeArr.includes(tahminKelime[i])) {
               newColors[row][i] = "#FFC107";
             } else {
-              newColors[row][i] = "#ff6767ff"; 
+              newColors[row][i] = "#ff6767ff";
             }
           }
         setCellColors(newColors);
@@ -116,6 +116,7 @@ const KelimeTablosu = () => {
           useUpdateScores({ 
             isWin: win,
             isLose: lose,
+            remainingRows,
             score,
             setCurrentStreak,
             setCurrentStreakScore,
@@ -154,8 +155,9 @@ const KelimeTablosu = () => {
   };
 
   return (
-    <div className="kelime-tablosu">
-      <button onClick={() => {
+    <div className="oyun-wrapper">
+      <button className="yenile-button"
+      onClick={() => {
         getKelime.getKelimeler(),
         setTable(Array.from({ length: ROWS }, () => Array(COLS).fill("")));
         setCellColors(Array.from({ length: ROWS }, () => Array(COLS).fill("")));
@@ -164,6 +166,13 @@ const KelimeTablosu = () => {
         setIsWin(false);
         setIsLose(false);
         setCorrectWords(["-", "-", "-","-", "-"]);
+        setCurrentStreak(0);
+        setCurrentStreakScore(0)
+        localStorage.setItem('score', JSON.stringify({
+          ...score,
+          currentStreak: 0,
+          currentStreakScore: 0
+        }));
       }}>
         Kelimeyi Yenile
       </button>
@@ -173,25 +182,21 @@ const KelimeTablosu = () => {
       currentCell={currentCell}
       currentRow={currentCell.row}
       />
-      <ResultAlert isWin={isWin} isLose={isLose} />
-      <table className="kelime-table letter-wrapper" id="kelimeTable">
+      <ResultAlert isWin={isWin} isLose={isLose} remainingRows={remainingRows}/>
+      <table className="kelime-tablosu letter-wrapper" id="kelimeTable">
         <tbody>
           {table.map((row, rowIdx) => (
             <tr key={rowIdx}>
               {row.map((cell, colIdx) => (
                 <td key={colIdx}>
                   <input
+                  className="letter-cell"
                     type="text"
                     maxLength={1}
                     value={cell}
                     readOnly
                     onFocus={() => setCurrentCell({ row: rowIdx, col: colIdx })}
                     style={{
-                      width: "2em",
-                      height: "2em",
-                      fontSize: "1.5em",
-                      textAlign: "center",
-                      textTransform: "uppercase",
                       background:
                         cellColors[rowIdx][colIdx] ||
                         (currentCell.row === rowIdx && currentCell.col === colIdx

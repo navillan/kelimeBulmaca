@@ -4,15 +4,27 @@
   text-align: center;
 }
 
+button {
+  height: 2.1rem;
+  color: #4a66b3;
+  background-color: #F2DBD5;
+  border-color: #F27F3D;
+  border-radius: 10px;
+}
+
+.main-header {
+  margin-top: 3vh;
+}
+
 .skor {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 2vh;
   pointer-events: none;
 }
 
 .skor-detay {
-  margin: 10px;
+  margin: 1vh;
 }
 
 .result-alert {
@@ -42,13 +54,34 @@
   box-sizing: border-box;
 }
 
-.kelime-tablosu {
-  margin-top: 30px;
+.oyun-wrapper {
+  margin-top: 2vh;
+}
+
+.letter-cell {
+  width: 2em;
+  height: 2em;
+  font-size: 1.5em;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease-in-out, color 0.4s ease-in-out;
+}
+
+.yenile-button {
+  display: block;
+  margin: 0 auto 0 auto;
+}
+
+.tahmin-wrapper {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  display: flex;
+  justify-content: center;
 }
 
 .tahmin-harfler {
-  margin-top: 34px;
-  margin-bottom: 34px;
+  letter-spacing: 0.4rem;
+  margin-left: 0.7rem;
 }
 
 .letter-wrapper {
@@ -59,6 +92,10 @@
 
 .letter {
   margin: 20px 20px;
+}
+
+.klavye-cluster {
+  margin-top: 4vh;
 }
 
 .button-cluster {

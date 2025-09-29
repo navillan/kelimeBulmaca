@@ -31,14 +31,14 @@ const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
       const isDisabled = !table[currentCell?.row]?.every(cell => cell !== "");
       return {
         style: {
-          background: buttonColor || "#e0e0e0",
+          background: buttonColor || "#F2DBD5",
         },
           disabled: isDisabled,
         };
       }
       return {
         style: {
-          background: buttonColor || "#e0e0e0",
+          background: buttonColor || "#F2DBD5",
         }
       };
     };
@@ -46,7 +46,6 @@ const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
 
   return (
     <div className="klavye-cluster">
-      <h2>Klavye Component</h2>
       <div className="button-cluster button-cluster-upper">
         {keys[0].map((k) => (
           <button 

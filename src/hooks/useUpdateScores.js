@@ -1,9 +1,9 @@
 
 
-const useUpdateScores = ({ isWin, isLose, score, setCurrentStreak, setCurrentStreakScore, setHighestStreak, setHighestStreakScore }) => {
+const useUpdateScores = ({ isWin, isLose, score, setCurrentStreak, setCurrentStreakScore, setHighestStreak, setHighestStreakScore, remainingRows }) => {
   if (isWin) {
     const newCurrentStreak = score.currentStreak + 1;
-    const newCurrentStreakScore = score.currentStreakScore + 1;
+    const newCurrentStreakScore = score.currentStreakScore + remainingRows;
 
     setCurrentStreak(newCurrentStreak);
     setCurrentStreakScore(newCurrentStreakScore);
