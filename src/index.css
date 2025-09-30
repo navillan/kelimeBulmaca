@@ -2,6 +2,7 @@
 
 .App {
   text-align: center;
+  color: #4a66b3;
 }
 
 button {
@@ -45,6 +46,7 @@ button {
   border: 3px solid rgb(29, 139, 19);
   height: 100%;
   box-sizing: border-box;
+  border-radius: 10px;
 }
 
 .lose-result-alert {
@@ -52,6 +54,7 @@ button {
   border: 3px solid red;
   height: 100%;
   box-sizing: border-box;
+  border-radius: 10px;
 }
 
 .oyun-wrapper {
