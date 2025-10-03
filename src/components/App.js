@@ -1,7 +1,8 @@
 import { useState } from "react";
 import KelimeTablosu from "./kelimeTablosu.js";
 import Skor from "./skor.js";
-
+import SendToUs from "./sendToUs.js";
+import MainHeader from "./mainHeader.js";
 
 function App () {
 
@@ -17,7 +18,7 @@ function App () {
   
   return (
     <div className="App">
-      <h1 className="main-header">Kelime Bulmaca</h1>
+      <MainHeader />
       <Skor 
         currentStreak={currentStreak}
         currentStreakScore={currentStreakScore}
@@ -28,8 +29,8 @@ function App () {
         currentStreakScore={currentStreakScore}
         setCurrentStreakScore={setCurrentStreakScore}
       />
+      <SendToUs />
     </div>
   );
 }
-
 export default App;
