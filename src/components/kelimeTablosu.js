@@ -182,7 +182,7 @@ const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, se
       currentCell={currentCell}
       currentRow={currentCell.row}
       />
-      <ResultAlert isWin={isWin} isLose={isLose} remainingRows={remainingRows}/>
+      <ResultAlert isWin={isWin} isLose={isLose} remainingRows={remainingRows} mainKelime={mainKelime}/>
       <table className="kelime-tablosu letter-wrapper" id="kelimeTable">
         <tbody>
           {table.map((row, rowIdx) => (

@@ -57,10 +57,10 @@ button {
 
 .result-alert button {
   font-weight: bold;
+  color: #4a66b3;
 }
 
 .win-result-alert {
-  color: rgb(29, 139, 19);
   border: 3px solid rgb(29, 139, 19);
   height: 100%;
   box-sizing: border-box;
@@ -68,7 +68,6 @@ button {
 }
 
 .lose-result-alert {
-  color: red;
   border: 3px solid red;
   height: 100%;
   box-sizing: border-box;
