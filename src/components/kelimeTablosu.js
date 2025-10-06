@@ -10,10 +10,10 @@ import TahminKelime from "./tahminKelime.js";
 
 const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, setCurrentStreakScore }) => {  
   let score = JSON.parse(localStorage.getItem('score')) || {
-          currentStreak,
-          currentStreakScore,
-          highestStreak,
-          highestStreakScore
+          currentStreak:0,
+          currentStreakScore:0,
+          highestStreak:0,
+          highestStreakScore:0
   };
   const ROWS = 7;
   const COLS = 5;
