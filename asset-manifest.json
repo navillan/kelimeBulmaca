@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/kelimeBulmaca/static/css/main.f8cfbff1.css",
-    "main.js": "/kelimeBulmaca/static/js/main.547067c2.js",
+    "main.js": "/kelimeBulmaca/static/js/main.b52fab40.js",
     "index.html": "/kelimeBulmaca/index.html",
     "main.f8cfbff1.css.map": "/kelimeBulmaca/static/css/main.f8cfbff1.css.map",
-    "main.547067c2.js.map": "/kelimeBulmaca/static/js/main.547067c2.js.map"
+    "main.b52fab40.js.map": "/kelimeBulmaca/static/js/main.b52fab40.js.map"
   },
   "entrypoints": [
     "static/css/main.f8cfbff1.css",
-    "static/js/main.547067c2.js"
+    "static/js/main.b52fab40.js"
   ]
 }
