@@ -5,6 +5,9 @@ import SendToUs from "./sendToUs.js";
 import MainHeader from "./mainHeader.js";
 
 function App () {
+  
+  const [currentStreak, setCurrentStreak] = useState(score.currentStreak || 0);
+  const [currentStreakScore, setCurrentStreakScore] = useState(score.currentStreakScore || 0);
 
   let score = JSON.parse(localStorage.getItem('score')) || {
           currentStreak,
@@ -12,9 +15,6 @@ function App () {
           highestStreak,
           highestStreakScore
   };
-
-  const [currentStreak, setCurrentStreak] = useState(score.currentStreak || 0);
-  const [currentStreakScore, setCurrentStreakScore] = useState(score.currentStreakScore || 0);
   
   return (
     <div className="App">
