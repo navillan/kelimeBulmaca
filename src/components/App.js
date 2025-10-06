@@ -5,16 +5,16 @@ import SendToUs from "./sendToUs.js";
 import MainHeader from "./mainHeader.js";
 
 function App () {
-  
-  const [currentStreak, setCurrentStreak] = useState(score.currentStreak || 0);
-  const [currentStreakScore, setCurrentStreakScore] = useState(score.currentStreakScore || 0);
 
   let score = JSON.parse(localStorage.getItem('score')) || {
-          currentStreak,
-          currentStreakScore,
-          highestStreak,
-          highestStreakScore
+          currentStreak:0,
+          currentStreakScore:0,
+          highestStreak:0,
+          highestStreakScore:0
   };
+
+  const [currentStreak, setCurrentStreak] = useState(score.currentStreak || 0);
+  const [currentStreakScore, setCurrentStreakScore] = useState(score.currentStreakScore || 0);
   
   return (
     <div className="App">
