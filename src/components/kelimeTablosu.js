@@ -34,11 +34,7 @@ const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, se
   const [cellColors, setCellColors] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
-  const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });  
-  console.log("Main Kelime:", mainKelime && Object.values(mainKelime).map(val =>
-          typeof val === "string" ? val.toUpperCase() : val
-    )
-  );
+  const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });
 
   let { row, col } = currentCell;
 
@@ -127,7 +123,6 @@ const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, se
 
         if (row < ROWS - 1) {
           setCurrentCell({ row: row + 1, col: 0 });
-          console.log(tahminKelime);        
           setTahminKelime([]);
         }
       } else if (!Object.values(kelimeler).includes(guess)) {

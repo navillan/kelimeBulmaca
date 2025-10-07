@@ -8,7 +8,6 @@ function useCheckValidWord (setIsValidWord, tahminKelime, kelimelerArray) {
     setIsValidWord(true)
   }
 
-  console.log("Kelimeler Kütüphanesi:", kelimelerLibrary);
   return { setIsValidWord };
 }
 

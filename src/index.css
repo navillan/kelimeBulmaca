@@ -14,13 +14,13 @@ button {
 }
 
 .main-header {
-  margin-top: 3vh;
+  margin-top: 1vh;
 }
 
 .main-header-rules {
   margin-top: 0.4rem;
   margin-bottom: 1rem;
-  font-size: 1.1vh;
+  font-size: 0.7rem;
   color: tomato;
   width: 24rem;
   text-align: left;

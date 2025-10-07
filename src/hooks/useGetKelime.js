@@ -25,8 +25,6 @@ const useGetKelime = () => {
       const kelime = kelimelerLibrary.length > 0 
     ? kelimelerLibrary[Math.floor(Math.random() * (kelimelerLibrary.length))]
     : "";
-  console.log("Harfin Kelimeleri:", kelime);
-  console.log("Tüm Kelimeler:", kelimelerLibrary);
   
   
     const mainKelime = kelime != {} 

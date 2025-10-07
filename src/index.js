@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAQgwprmtIe7xDYfedZw9zPX0AuelalE-w",
+  apiKey: process.env.REACT_APP_API_KEY,
   authDomain: "kelimebulmaca-75e54.firebaseapp.com",
   projectId: "kelimebulmaca-75e54",
   storageBucket: "kelimebulmaca-75e54.firebasestorage.app",
