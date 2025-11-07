@@ -8,7 +8,7 @@ import TahminKelime from "./tahminKelime.js";
 
 
 
-const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, setCurrentStreakScore }) => {  
+const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {  
   let score = JSON.parse(localStorage.getItem('score')) || {
           currentStreak:0,
           currentStreakScore:0,
@@ -27,7 +27,7 @@ const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, se
   const [isValidWord, setIsValidWord] = useState(false);
   const { mainKelime, kelimeler, kelimelerArray } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
-
+  
   const [table, setTable] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
@@ -48,19 +48,17 @@ const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, se
   }, [tahminKelime]);
   
   
-  const handleCorrectWords = (e, tahminKelime) => {
-    
+  const handleCorrectWords = (e, tahminKelime) => {    
     setCorrectWords((prev) => {
       const newCorrectWords = [...prev];
       newCorrectWords[e] = tahminKelime;
       return newCorrectWords;
     });
   };
-
-
+  
   
   const handleKeyboardInput = (key) => {
-    if (key === "⌫") {
+    if (key === "⌫" || key === "Backspace") {
       if (col > 0 || (col === 0 && table[row][col] !== "")) {
         const newCol = col > 0 && table[row][col] === "" ? col - 1 : col;
         const updatedTable = table.map((rArr, rIdx) =>
@@ -79,7 +77,7 @@ const KelimeTablosu = ({ currentStreak, setCurrentStreak, currentStreakScore, se
         return newColors;
         });
       }
-    } else if (key === "⏎") {
+    } else if (key === "⏎" || key === "Enter") {
       const guess = tahminKelime.join("");
 
       if (isValidWord) {

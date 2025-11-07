@@ -1,8 +1,8 @@
-
+import { useEffect } from "react"
 const keys = [
   ["A", "B", "C", "Ç", "D", "E", "F", "G", "Ğ", "H", "I", "İ"],
   ["J", "K", "L", "M", "N", "O", "Ö", "P", "R", "S", "Ş"],
-  ["⏎", "T", "U", "Ü", "V", "Y", "Z", "⌫"],
+  ["⌫", "T", "U", "Ü", "V", "Y", "Z", "⏎"],
 ];
 
 const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
@@ -24,6 +24,21 @@ const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
     }
     return color;
   };
+  
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      let key = event.key;
+      if (key === "i") {
+        onKeyPress("İ");
+      } else if (key === "ı") {
+        onKeyPress("I");
+      } else {
+        onKeyPress(key);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onKeyPress]);
 
   const getButtonProps = (k) => {
     const buttonColor = getLetterColor(k);
@@ -73,7 +88,7 @@ const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
           <button 
           key={k} 
           onClick={() => onKeyPress(k)} 
-          className={["⏎", "⌫"].includes(k) ? "special-key" : ""}
+          className={["⌫", "⏎"].includes(k) ? "special-key" : ""}
           {...getButtonProps(k)}
           >
             {k}
