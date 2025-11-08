@@ -80,8 +80,8 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {
     } else if (key === "⏎" || key === "Enter") {
       const guess = tahminKelime.join("");
 
-      if (isValidWord) {
-        if (tahminKelime.length === COLS && mainKelime) {          
+      if (isValidWord) {        
+        if (tahminKelime.length === COLS && tahminKelime.length === mainKelime.length) {
           const mainKelimeArr = Object.values(mainKelime).map(val =>
             typeof val === "string" ? val.toUpperCase() : val
           );
@@ -122,6 +122,7 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {
         if (row < ROWS - 1) {
           setCurrentCell({ row: row + 1, col: 0 });
           setTahminKelime([]);
+          setIsValidWord(false);
         }
       } else if (!Object.values(kelimeler).includes(guess)) {
         const updatedTable = table.map((rArr, rIdx) =>
