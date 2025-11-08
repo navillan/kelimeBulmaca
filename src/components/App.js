@@ -5,6 +5,7 @@ import SendToUs from "./sendToUs.js";
 import MainHeader from "./mainHeader.js";
 
 function App () {
+  const [showSendToUs, setShowSendToUs] = useState(false);
 
   let score = JSON.parse(localStorage.getItem('score')) || {
           currentStreak:0,
@@ -28,8 +29,9 @@ function App () {
         setCurrentStreak={setCurrentStreak}
         currentStreakScore={currentStreakScore}
         setCurrentStreakScore={setCurrentStreakScore}
+        showSendToUs={showSendToUs}
       />
-      <SendToUs />
+      <SendToUs setShowSendToUs={setShowSendToUs} />
     </div>
   );
 }

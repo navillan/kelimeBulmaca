@@ -1,5 +1,5 @@
 import useRandomKelime from "../hooks/useGetKelime.js";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Klavye from "./klavye.js";
 import ResultAlert from "./resultAlert.js";
 import useCheckValidWord from "../hooks/useCheckValidWord.js";
@@ -8,7 +8,7 @@ import TahminKelime from "./tahminKelime.js";
 
 
 
-const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {  
+const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, showSendToUs }) => {  
   let score = JSON.parse(localStorage.getItem('score')) || {
           currentStreak:0,
           currentStreakScore:0,
@@ -25,9 +25,14 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {
   const [highestStreak, setHighestStreak] = useState(score.highestStreak || 0);
   const [highestStreakScore, setHighestStreakScore] = useState(score.highestStreakScore || 0);
   const [isValidWord, setIsValidWord] = useState(false);
-  const { mainKelime, kelimeler, kelimelerArray } = getKelime;
   const [tahminKelime, setTahminKelime] = useState([]);
-  
+  const { mainKelime, kelimeler, kelimelerArray } = getKelime;
+  const [remainingWords, setRemainingWords] = useState([]);
+
+  useEffect(() => {
+    setRemainingWords(mainKelime ? Object.values(mainKelime).filter(val => typeof val === "string") : []);
+  }, [mainKelime]);
+
   const [table, setTable] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
@@ -40,8 +45,8 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {
 
   useEffect(() => {
     if (
-    currentCell.col === COLS - 1 &&
-    table[currentCell.row][currentCell.col] !== ""
+      currentCell.col === COLS - 1 &&
+      table[currentCell.row][currentCell.col] !== ""
     ) {
       useCheckValidWord(setIsValidWord, tahminKelime, kelimelerArray);
     }
@@ -58,6 +63,8 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {
   
   
   const handleKeyboardInput = (key) => {
+    
+    if (isWin || isLose || showSendToUs) return;
     if (key === "⌫" || key === "Backspace") {
       if (col > 0 || (col === 0 && table[row][col] !== "")) {
         const newCol = col > 0 && table[row][col] === "" ? col - 1 : col;
@@ -80,7 +87,7 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {
     } else if (key === "⏎" || key === "Enter") {
       const guess = tahminKelime.join("");
 
-      if (isValidWord) {        
+      if (isValidWord) {
         if (tahminKelime.length === COLS && tahminKelime.length === mainKelime.length) {
           const mainKelimeArr = Object.values(mainKelime).map(val =>
             typeof val === "string" ? val.toUpperCase() : val
@@ -88,15 +95,19 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore }) => {
           const newColors = cellColors.map(arr => [...arr]);
           for (let i = 0; i < COLS; i++) {
             if (tahminKelime[i] === mainKelimeArr[i]) {
+              setRemainingWords(prev => {
+                return prev.filter((_, idx) => idx !== i);
+              });
               newColors[row][i] = "#8BC34A";
               handleCorrectWords(i, tahminKelime[i]);
               setRemainingRows(7 - currentCell.row)
-            } else if (mainKelimeArr.includes(tahminKelime[i])) {
+            } else if (mainKelimeArr.includes(tahminKelime[i]) && remainingWords.includes(tahminKelime[i])) {
               newColors[row][i] = "#FFC107";
             } else {
               newColors[row][i] = "#ff6767ff";
             }
           }
+          
         setCellColors(newColors);
 
         let win = false, lose = false;
