@@ -16,6 +16,8 @@ function App () {
 
   const [currentStreak, setCurrentStreak] = useState(score.currentStreak || 0);
   const [currentStreakScore, setCurrentStreakScore] = useState(score.currentStreakScore || 0);
+  const [highestStreak, setHighestStreak] = useState(score.highestStreak || 0);
+  const [highestStreakScore, setHighestStreakScore] = useState(score.highestStreakScore || 0);
   
   return (
     <div className="App">
@@ -23,12 +25,16 @@ function App () {
       <Skor 
         currentStreak={currentStreak}
         currentStreakScore={currentStreakScore}
+        highestStreak={highestStreak}
+        highestStreakScore={highestStreakScore}
       />
       <KelimeTablosu
         currentStreak={currentStreak}
         setCurrentStreak={setCurrentStreak}
         currentStreakScore={currentStreakScore}
         setCurrentStreakScore={setCurrentStreakScore}
+        setHighestStreakScore={setHighestStreakScore}
+        setHighestStreak={setHighestStreak}
         showSendToUs={showSendToUs}
       />
       <SendToUs setShowSendToUs={setShowSendToUs} />

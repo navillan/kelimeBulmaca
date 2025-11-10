@@ -31,7 +31,7 @@ function SendToUs({ setShowSendToUs }) {
   return (
     <div className="send-to-us-wrapper">
       <p style={{ fontWeight: 'bold' }}>Öneri ve görüşleriniz için: </p>
-      <button className="send-to-us-button" onClick={() => {$('.send-to-us-form').toggle(); setShowSendToUs(true); $('.send-to-us-button').attr("disabled", true);}}>
+      <button tabIndex={-1} className="send-to-us-button" onClick={() => {$('.send-to-us-form').toggle(); setShowSendToUs(true); $('.send-to-us-button').attr("disabled", true);}}>
         Bize bir e-posta gönderin
       </button>
       <div className="send-to-us-form" style={{ display: 'none' }}>

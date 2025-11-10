@@ -1,5 +1,5 @@
 import useRandomKelime from "../hooks/useGetKelime.js";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Klavye from "./klavye.js";
 import ResultAlert from "./resultAlert.js";
 import useCheckValidWord from "../hooks/useCheckValidWord.js";
@@ -8,7 +8,7 @@ import TahminKelime from "./tahminKelime.js";
 
 
 
-const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, showSendToUs }) => {  
+const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, setHighestStreak, setHighestStreakScore, showSendToUs }) => {  
   let score = JSON.parse(localStorage.getItem('score')) || {
           currentStreak:0,
           currentStreakScore:0,
@@ -21,16 +21,15 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, showSendToUs 
   const [isWin, setIsWin] = useState(false);
   const [isLose, setIsLose] = useState(false);
   const [remainingRows, setRemainingRows] = useState(7);
-  const [correctWords, setCorrectWords] = useState(["-", "-", "-", "-", "-"]);
-  const [highestStreak, setHighestStreak] = useState(score.highestStreak || 0);
-  const [highestStreakScore, setHighestStreakScore] = useState(score.highestStreakScore || 0);
+  const [correctWords, setCorrectWords] = useState(["-", "-", "-", "-", "-"]);  
   const [isValidWord, setIsValidWord] = useState(false);
   const [tahminKelime, setTahminKelime] = useState([]);
   const { mainKelime, kelimeler, kelimelerArray } = getKelime;
-  const [remainingWords, setRemainingWords] = useState([]);
+  const [remainingLetters, setRemainingLetters] = useState([]);
+  const [triedWords, setTriedWords] = useState([]);
 
   useEffect(() => {
-    setRemainingWords(mainKelime ? Object.values(mainKelime).filter(val => typeof val === "string") : []);
+    setRemainingLetters(mainKelime ? Object.values(mainKelime).filter(val => typeof val === "string") : []);
   }, [mainKelime]);
 
   const [table, setTable] = useState(
@@ -87,7 +86,7 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, showSendToUs 
     } else if (key === "⏎" || key === "Enter") {
       const guess = tahminKelime.join("");
 
-      if (isValidWord) {
+      if (isValidWord && !triedWords.includes(guess)) {
         if (tahminKelime.length === COLS && tahminKelime.length === mainKelime.length) {
           const mainKelimeArr = Object.values(mainKelime).map(val =>
             typeof val === "string" ? val.toUpperCase() : val
@@ -95,20 +94,22 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, showSendToUs 
           const newColors = cellColors.map(arr => [...arr]);
           for (let i = 0; i < COLS; i++) {
             if (tahminKelime[i] === mainKelimeArr[i]) {
-              setRemainingWords(prev => {
+              setRemainingLetters(prev => {
                 return prev.filter((_, idx) => idx !== i);
-              });
+              });              
               newColors[row][i] = "#8BC34A";
               handleCorrectWords(i, tahminKelime[i]);
               setRemainingRows(7 - currentCell.row)
-            } else if (mainKelimeArr.includes(tahminKelime[i]) && remainingWords.includes(tahminKelime[i])) {
+            } else if (mainKelimeArr.includes(tahminKelime[i]) && remainingLetters.includes(tahminKelime[i])) {
+              
               newColors[row][i] = "#FFC107";
             } else {
               newColors[row][i] = "#ff6767ff";
             }
           }
-          
+        setTriedWords(prev => [...prev, guess]);
         setCellColors(newColors);
+        
 
         let win = false, lose = false;
         if (newColors[row].every(color => color === "#8BC34A")) {
@@ -162,11 +163,14 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, showSendToUs 
   return (
     <div className="oyun-wrapper">
       <button className="yenile-button"
+      tabIndex={-1}
       onClick={() => {
         getKelime.getKelimeler(),
         setTable(Array.from({ length: ROWS }, () => Array(COLS).fill("")));
         setCellColors(Array.from({ length: ROWS }, () => Array(COLS).fill("")));
         setTahminKelime([]);
+        setTriedWords([]);
+        setRemainingLetters([]);
         setCurrentCell({ row: 0, col: 0 });
         setIsWin(false);
         setIsLose(false);
@@ -194,7 +198,7 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, showSendToUs 
             <tr key={rowIdx}>
               {row.map((cell, colIdx) => (
                 <td key={colIdx}>
-                  <input
+                  <input tabIndex={-1}
                   className="letter-cell"
                     type="text"
                     maxLength={1}

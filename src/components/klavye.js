@@ -64,6 +64,7 @@ const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
       <div className="button-cluster button-cluster-upper">
         {keys[0].map((k) => (
           <button 
+          tabIndex={-1}
           key={k} 
           onClick={() => onKeyPress(k)} 
           {...getButtonProps(k)}
@@ -75,6 +76,7 @@ const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
       <div className="button-cluster button-cluster-middle">
         {keys[1].map((k) => (
           <button 
+          tabIndex={-1}
           key={k} 
           onClick={() => onKeyPress(k)} 
           {...getButtonProps(k)}
@@ -86,6 +88,7 @@ const Klavye = ({ onKeyPress, cellColors, table, currentCell }) => {
       <div className="button-cluster button-cluster-bottom">
         {keys[2].map((k) => (
           <button 
+          tabIndex={-1}
           key={k} 
           onClick={() => onKeyPress(k)} 
           className={["⌫", "⏎"].includes(k) ? "special-key" : ""}
