@@ -25,12 +25,9 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, setHighestStr
   const [isValidWord, setIsValidWord] = useState(false);
   const [tahminKelime, setTahminKelime] = useState([]);
   const { mainKelime, kelimeler, kelimelerArray } = getKelime;
-  const [remainingLetters, setRemainingLetters] = useState([]);
   const [triedWords, setTriedWords] = useState([]);
+  const [remainingLetters, setRemainingLetters] = useState([]);
 
-  useEffect(() => {
-    setRemainingLetters(mainKelime ? Object.values(mainKelime).filter(val => typeof val === "string") : []);
-  }, [mainKelime]);
 
   const [table, setTable] = useState(
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
@@ -39,8 +36,16 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, setHighestStr
     Array.from({ length: ROWS }, () => Array(COLS).fill(""))
   );
   const [currentCell, setCurrentCell] = useState({ row: 0, col: 0 });
-
   let { row, col } = currentCell;
+
+  useEffect(() => {
+    setRemainingLetters(
+      Object.values(mainKelime).map(val =>
+        typeof val === "string" ? val.toUpperCase() : val
+      )
+    );
+  }, [mainKelime]);
+
 
   useEffect(() => {
     if (
@@ -50,7 +55,7 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, setHighestStr
       useCheckValidWord(setIsValidWord, tahminKelime, kelimelerArray);
     }
   }, [tahminKelime]);
-  
+
   
   const handleCorrectWords = (e, tahminKelime) => {    
     setCorrectWords((prev) => {
@@ -59,7 +64,7 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, setHighestStr
       return newCorrectWords;
     });
   };
-  
+
   
   const handleKeyboardInput = (key) => {
     
@@ -90,26 +95,32 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, setHighestStr
         if (tahminKelime.length === COLS && tahminKelime.length === mainKelime.length) {
           const mainKelimeArr = Object.values(mainKelime).map(val =>
             typeof val === "string" ? val.toUpperCase() : val
-          );
+          );          
           const newColors = cellColors.map(arr => [...arr]);
+
           for (let i = 0; i < COLS; i++) {
             if (tahminKelime[i] === mainKelimeArr[i]) {
-              setRemainingLetters(prev => {
-                return prev.filter((_, idx) => idx !== i);
-              });              
               newColors[row][i] = "#8BC34A";
+              setRemainingLetters(prev => {
+                const newRemaining = [...prev];
+                newRemaining.splice(newRemaining.indexOf(tahminKelime[i]), 1);
+                return newRemaining;
+              });
               handleCorrectWords(i, tahminKelime[i]);
-              setRemainingRows(7 - currentCell.row)
-            } else if (mainKelimeArr.includes(tahminKelime[i]) && remainingLetters.includes(tahminKelime[i])) {
-              
+            }
+          }
+
+          for (let i = 0; i < COLS; i++) {
+            if (newColors[row][i] === "#8BC34A") continue;
+            if (mainKelimeArr.includes(tahminKelime[i]) && remainingLetters.includes(tahminKelime[i])) {
               newColors[row][i] = "#FFC107";
             } else {
               newColors[row][i] = "#ff6767ff";
             }
-          }
+          }          
         setTriedWords(prev => [...prev, guess]);
         setCellColors(newColors);
-        
+        setRemainingRows(remainingRows - 1);        
 
         let win = false, lose = false;
         if (newColors[row].every(color => color === "#8BC34A")) {
@@ -170,7 +181,6 @@ const KelimeTablosu = ({  setCurrentStreak, setCurrentStreakScore, setHighestStr
         setCellColors(Array.from({ length: ROWS }, () => Array(COLS).fill("")));
         setTahminKelime([]);
         setTriedWords([]);
-        setRemainingLetters([]);
         setCurrentCell({ row: 0, col: 0 });
         setIsWin(false);
         setIsLose(false);
